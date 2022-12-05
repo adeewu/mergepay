@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+      <html>
+      <head>
+      <title>支付接口</title>
+      <meta charset="utf-8" />
+      <style>@charset "UTF-8";
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* 外层轨道 */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset006pxrgba(255, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
+  font-size: 13px;
+  line-height: 25px;
+  color: #393838;
+  position: relative;
+}
+
+table {
+  margin: 10px 0 15px 0;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+  padding: 3px 10px;
+}
+
+th {
+  padding: 5px 10px;
+}
+
+a, a:link, a:visited {
+  color: #34495e;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #59d69d;
+  text-decoration: none;
+}
+
+a img {
+  border: none;
+}
+
+p {
+  padding-left: 10px;
+  margin-bottom: 9px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #404040;
+  line-height: 36px;
+}
+
+h1 {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 16px;
+  font-size: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ddd;
+  line-height: 50px;
+}
+
+h2 {
+  font-size: 28px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+h3 {
+  clear: both;
+  font-weight: 400;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 3px solid #59d69d;
+  padding-left: 8px;
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  font-size: 13px;
+}
+
+hr {
+  margin: 0 0 19px;
+  border: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+blockquote {
+  padding: 13px 13px 21px 15px;
+  margin-bottom: 18px;
+  font-family: georgia, serif;
+  font-style: italic;
+}
+
+blockquote:before {
+  font-size: 40px;
+  margin-left: -10px;
+  font-family: georgia, serif;
+  color: #eee;
+}
+
+blockquote p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 18px;
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+code,
+pre {
+  font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+
+code {
+  background-color: #fee9cc;
+  color: rgba(0, 0, 0, 0.75);
+  padding: 1px 3px;
+  font-size: 12px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+pre {
+  display: block;
+  padding: 14px;
+  margin: 0 0 18px;
+  line-height: 16px;
+  font-size: 11px;
+  border: 1px solid #d9d9d9;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: #f6f6f6;
+}
+
+pre code {
+  background-color: #f6f6f6;
+  color: #737373;
+  font-size: 11px;
+  padding: 0;
+}
+
+sup {
+  font-size: 0.83em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+* {
+  -webkit-print-color-adjust: exact;
+}
+
+@media print {
+  body,
+  code,
+  pre code,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: black;
+  }
+
+  table,
+  pre {
+    page-break-inside: avoid;
+  }
+}
+html,
+body {
+  height: 100%;
+}
+
+.table-of-contents {
+  position: fixed;
+  top: 61px;
+  left: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 260px;
+}
+
+.table-of-contents > ul > li > a {
+  font-size: 20px;
+  margin-bottom: 16px;
+  margin-top: 16px;
+}
+
+.table-of-contents ul {
+  overflow: auto;
+  margin: 0px;
+  height: 100%;
+  padding: 0px 0px;
+  box-sizing: border-box;
+  list-style-type: none;
+}
+
+.table-of-contents ul li {
+  padding-left: 20px;
+}
+
+.table-of-contents a {
+  padding: 2px 0px;
+  display: block;
+  text-decoration: none;
+}
+
+.content-right {
+  max-width: 700px;
+  margin-left: 290px;
+  padding-left: 70px;
+  flex-grow: 1;
+}
+.content-right h2:target {
+  padding-top: 80px;
+}
+
+body > p {
+  margin-left: 30px;
+}
+
+body > table {
+  margin-left: 30px;
+}
+
+body > pre {
+  margin-left: 30px;
+}
+
+.curProject {
+  position: fixed;
+  top: 20px;
+  font-size: 25px;
+  color: black;
+  margin-left: -240px;
+  width: 240px;
+  padding: 5px;
+  line-height: 25px;
+  box-sizing: border-box;
+}
+
+.g-doc {
+  margin-top: 56px;
+  padding-top: 24px;
+  display: flex;
+}
+
+.curproject-name {
+  font-size: 42px;
+}
+
+.m-header {
+  background: #32363a;
+  height: 56px;
+  line-height: 56px;
+  padding-left: 60px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.m-header .title {
+  font-size: 22px;
+  color: #fff;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  margin-left: 16px;
+  padding: 0;
+  line-height: 56px;
+  border: none;
+}
+.m-header .nav {
+  color: #fff;
+  font-size: 16px;
+  position: absolute;
+  right: 32px;
+  top: 0;
+}
+.m-header .nav a {
+  color: #fff;
+  margin-left: 16px;
+  padding: 8px;
+  transition: color .2s;
+}
+.m-header .nav a:hover {
+  color: #59d69d;
+}
+
+.m-footer {
+  border-top: 1px solid #ddd;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+/*# sourceMappingURL=defaultTheme.css.map */
+</style>
+      </head>
+      <body>
+        <div class="m-header">
+          <a href="#" style="display: inherit;"><svg class="svg" width="32px" height="32px" viewBox="0 0 64 64" version="1.1"><title>Icon</title><desc>Created with Sketch.</desc><defs><linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1"><stop stop-color="#FFFFFF" offset="0%"></stop><stop stop-color="#F2F2F2" offset="100%"></stop></linearGradient><circle id="path-2" cx="31.9988602" cy="31.9988602" r="2.92886048"></circle><filter x="-85.4%" y="-68.3%" width="270.7%" height="270.7%" filterUnits="objectBoundingBox" id="filter-3"><feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset><feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur><feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.159703351 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix></filter></defs><g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="大屏幕"><g id="Icon"><circle id="Oval-1" fill="url(#linearGradient-1)" cx="32" cy="32" r="32"></circle><path d="M36.7078009,31.8054514 L36.7078009,51.7110548 C36.7078009,54.2844537 34.6258634,56.3695395 32.0579205,56.3695395 C29.4899777,56.3695395 27.4099998,54.0704461 27.4099998,51.7941246 L27.4099998,31.8061972 C27.4099998,29.528395 29.4909575,27.218453 32.0589004,27.230043 C34.6268432,27.241633 36.7078009,29.528395 36.7078009,31.8054514 Z" id="blue" fill="#2359F1" fill-rule="nonzero"></path><path d="M45.2586091,17.1026914 C45.2586091,17.1026914 45.5657231,34.0524383 45.2345291,37.01141 C44.9033351,39.9703817 43.1767091,41.6667796 40.6088126,41.6667796 C38.040916,41.6667796 35.9609757,39.3676862 35.9609757,37.0913646 L35.9609757,17.1034372 C35.9609757,14.825635 38.0418959,12.515693 40.6097924,12.527283 C43.177689,12.538873 45.2586091,14.825635 45.2586091,17.1026914 Z" id="green" fill="#57CF27" fill-rule="nonzero" transform="translate(40.674608, 27.097010) rotate(60.000000) translate(-40.674608, -27.097010) "></path><path d="M28.0410158,17.0465598 L28.0410158,36.9521632 C28.0410158,39.525562 25.9591158,41.6106479 23.3912193,41.6106479 C20.8233227,41.6106479 18.7433824,39.3115545 18.7433824,37.035233 L18.7433824,17.0473055 C18.7433824,14.7695034 20.8243026,12.4595614 23.3921991,12.4711513 C25.9600956,12.4827413 28.0410158,14.7695034 28.0410158,17.0465598 Z" id="red" fill="#FF561B" fill-rule="nonzero" transform="translate(23.392199, 27.040878) rotate(-60.000000) translate(-23.392199, -27.040878) "></path><g id="inner-round"><use fill="black" fill-opacity="1" filter="url(#filter-3)" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#path-2"></use><use fill="#F7F7F7" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#path-2"></use></g></g></g></g></svg></a>
+          <a href="#"><h1 class="title">YAPI 接口文档</h1></a>
+          <div class="nav">
+            <a href="/doc/">YApi</a>
+          </div>
+        </div>
+        <div class="g-doc">
+          <div class="table-of-contents"><ul><li><a href="#u626bu7801u724c">扫码牌</a><ul><li><a href="#u83b7u53d6u626bu7801u724cu914du7f6eu98790a3ca20id3du83b7u53d6u626bu7801u724cu914du7f6eu98793e203ca3e">获取扫码牌配置项
+<a id=获取扫码牌配置项> </a></a></li><li><a href="#u83b7u53d6u652fu4ed8u8fdeu63a50a3ca20id3du83b7u53d6u652fu4ed8u8fdeu63a53e203ca3e">获取支付连接
+<a id=获取支付连接> </a></a></li></ul></li><li><a href="#u652fu4ed8">支付</a><ul><li><a href="#b2cu652fu4ed80a3ca20id3db2cu652fu4ed83e203ca3e">B2C支付
+<a id=B2C支付> </a></a></li><li><a href="#c2bu652fu4ed80a3ca20id3dc2bu652fu4ed83e203ca3e">C2B支付
+<a id=C2B支付> </a></a></li><li><a href="#u56deu8c03u901au77e50a3ca20id3du56deu8c03u901au77e53e203ca3e">回调通知
+<a id=回调通知> </a></a></li><li><a href="#u5faeu4fe1jsu652fu4ed8uff0cu652fu6301u5c0fu7a0bu5e8fu3001u516cu4f17u53f70a3ca20id3du5faeu4fe1jsu652fu4ed8uff0cu652fu6301u5c0fu7a0bu5e8fu3001u516cu4f17u53f73e203ca3e">微信js支付，支持小程序、公众号
+<a id=微信js支付，支持小程序、公众号> </a></a></li><li><a href="#u67e5u8be2u652fu4ed8u7ed3u679c0a3ca20id3du67e5u8be2u652fu4ed8u7ed3u679c3e203ca3e">查询支付结果
+<a id=查询支付结果> </a></a></li><li><a href="#u83b7u53d6c2bu652fu4ed8u7801u94feu63a50a3ca20id3du83b7u53d6c2bu652fu4ed8u7801u94feu63a53e203ca3e">获取C2B支付码链接
+<a id=获取C2B支付码链接> </a></a></li><li><a href="#u83b7u53d6u5faeu4fe1jsu652fu4ed8u53c2u6570uff0cu652fu6301u5c0fu7a0bu5e8fu3001u516cu4f17u53f70a3ca20id3du83b7u53d6u5faeu4fe1jsu652fu4ed8u53c2u6570uff0cu652fu6301u5c0fu7a0bu5e8fu3001u516cu4f17u53f73e203ca3e">获取微信js支付参数，支持小程序、公众号
+<a id=获取微信js支付参数，支持小程序、公众号> </a></a></li></ul></li><li><a href="#u9000u6b3e">退款</a><ul><li><a href="#u539fu8defu9000u6b3e0a3ca20id3du539fu8defu9000u6b3e3e203ca3e">原路退款
+<a id=原路退款> </a></a></li><li><a href="#u67e5u8be2u9000u6b3eu7ed3u679c0a3ca20id3du67e5u8be2u9000u6b3eu7ed3u679c3e203ca3e">查询退款结果
+<a id=查询退款结果> </a></a></li></ul></li><li><a href="#u6536u6b3eu6d41u6c34">收款流水</a><ul><li><a href="#u67e5u8be2u62a5u886828v2290a3ca20id3du67e5u8be2u62a5u886828v2293e203ca3e">查询报表(V2)
+<a id=查询报表(V2)> </a></a></li><li><a href="#u83b7u53d6u62a5u8868u8be6u60c528v2290a3ca20id3du83b7u53d6u62a5u8868u8be6u60c528v2293e203ca3e">获取报表详情(V2)
+<a id=获取报表详情(V2)> </a></a></li></ul></li></ul></div>
+          <div id="right" class="content-right">
+           <h1 class="curproject-name"> 支付接口 </h1> 
+<h1 id="u626bu7801u724c">扫码牌</h1>
+<p></p>
+<h2 id="u83b7u53d6u626bu7801u724cu914du7f6eu98790a3ca20id3du83b7u53d6u626bu7801u724cu914du7f6eu98793e203ca3e">获取扫码牌配置项
+<a id=获取扫码牌配置项> </a></h2>
+<p></p>
+<h3 id="">基本信息</h3>
+<p><strong>Path：</strong> /api/QRPay/Config</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-2">请求参数</h3>
+<p><strong>Query</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shopId</td>
+<td>否</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="-3">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> shopId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">店铺Id</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> shopName</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">店铺名称</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> showCCB</span></td><td key=1><span>boolean</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">显示龙支付按钮</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> logo</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">商家logo</span></td><td key=5></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryUrl</span></td><td key=1><span>boolean</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询地址</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u83b7u53d6u652fu4ed8u8fdeu63a50a3ca20id3du83b7u53d6u652fu4ed8u8fdeu63a53e203ca3e">获取支付连接
+<a id=获取支付连接> </a></h2>
+<p></p>
+<h3 id="-4">基本信息</h3>
+<p><strong>Path：</strong> /api/QRPay/PayLink</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-5">请求参数</h3>
+<p><strong>Query</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>amount</td>
+<td>否</td>
+<td></td>
+<td>金额</td>
+</tr>
+<tr>
+<td>shopId</td>
+<td>否</td>
+<td></td>
+<td>店铺Id</td>
+</tr>
+<tr>
+<td>payType</td>
+<td>否</td>
+<td></td>
+<td>支付方式，1：微信、支付宝，2：龙支付</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-6">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> </span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h1 id="u652fu4ed8">支付</h1>
+<p></p>
+<h2 id="b2cu652fu4ed80a3ca20id3db2cu652fu4ed83e203ca3e">B2C支付
+<a id=B2C支付> </a></h2>
+<p></p>
+<h3 id="-7">基本信息</h3>
+<p><strong>Path：</strong> /api/ConvergePay/B2C</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-8">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>key</td>
+<td></td>
+<td>是</td>
+<td></td>
+<td>令牌key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> authCode</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付码</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> money</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收款金额</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> subject</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收款说明</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> businessType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"><br/>
+0:Unknown,未分类; <br/>
+1:WebCheckout,网页收银台; <br/>
+2:AndroidCheckout,安卓收银台; <br/>
+3:IOSCheckout,IOS收银台; <br/>
+4:OnlineShop,在线商城; <br/>
+5:ScanBooking,扫码点餐; <br/>
+6:NoCodePay,无码收银; <br/>
+7:MemberRecharge,会员充值; <br/>
+8:MemberRechargeCount,会员充次; <br/>
+9:MiniProOrder,小程序订单; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>0,1,2,3,4,5,6,7,8,9</span></p></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询Id</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h3 id="-9">返回数据</h3>
+<pre><code class="language-javascript">Success
+</code></pre>
+<h2 id="c2bu652fu4ed80a3ca20id3dc2bu652fu4ed83e203ca3e">C2B支付
+<a id=C2B支付> </a></h2>
+<p></p>
+<h3 id="-10">基本信息</h3>
+<p><strong>Path：</strong> /api/ConvergePay/C2B</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-11">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Query</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shopId</td>
+<td>否</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> paymentType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式<br/>
+1:QRPay,扫码支付; <br/>
+2:WechatPay,微信支付; <br/>
+3:Alipay,支付宝; <br/>
+4:CCB,龙支付; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,3,4</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> money</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收款金额</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> subject</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收款说明</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> businessType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"><br/>
+0:Unknown,未分类; <br/>
+1:WebCheckout,网页收银台; <br/>
+2:AndroidCheckout,安卓收银台; <br/>
+3:IOSCheckout,IOS收银台; <br/>
+4:OnlineShop,在线商城; <br/>
+5:ScanBooking,扫码点餐; <br/>
+6:NoCodePay,无码收银; <br/>
+7:MemberRecharge,会员充值; <br/>
+8:MemberRechargeCount,会员充次; <br/>
+9:MiniProOrder,小程序订单; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>0,1,2,3,4,5,6,7,8,9</span></p></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询Id</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h3 id="-12">返回数据</h3>
+<pre><code class="language-javascript">Success
+</code></pre>
+<h2 id="u56deu8c03u901au77e50a3ca20id3du56deu8c03u901au77e53e203ca3e">回调通知
+<a id=回调通知> </a></h2>
+<p></p>
+<h3 id="-13">基本信息</h3>
+<p><strong>Path：</strong> /api/ConvergePay/Notify</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-14">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> shopId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">商户Id</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> signValue</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">验签密钥</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> notifyUrl</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">通知地址</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> money</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">订单金额</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> orderTime</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">订单时间</span></td><td key=5><p key=4><span style="font-weight: '700'">format: </span><span>date-time</span></p></td></tr><tr key=0-5><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payOrderId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付订单号</span></td><td key=5></td></tr><tr key=0-6><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> orderStatus</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付状态</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-7><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> orderStatusMessage</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付状态描述</span></td><td key=5></td></tr><tr key=0-8><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> paymentType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式<br/>
+1:QRPay,扫码支付; <br/>
+2:WechatPay,微信支付; <br/>
+3:Alipay,支付宝; <br/>
+4:CCB,龙支付; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,3,4</span></p></td></tr><tr key=0-9><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payOrganizationType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收单机构<br/>
+5:StartPosPay,新大陆; <br/>
+11:CCBPay,CCBPay; <br/>
+14:CCBPaySync,龙支付定时上单; <br/>
+-1:Unknown,未知; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>5,11,14,-1</span></p></td></tr><tr key=0-10><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> notifyType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">通知类型</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-11><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payOrganizationNotifyCode</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收单机构通知码</span></td><td key=5></td></tr><tr key=0-12><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> dispatchs</span></td><td key=1><span>integer []</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">调度表，单位：秒</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>integer</span></p></td></tr><tr key=array-42><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> </span></td><td key=1><span></span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr><tr key=0-13><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> index</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">当前次数</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-14><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> businessType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"><br/>
+0:Unknown,未分类; <br/>
+1:WebCheckout,网页收银台; <br/>
+2:AndroidCheckout,安卓收银台; <br/>
+3:IOSCheckout,IOS收银台; <br/>
+4:OnlineShop,在线商城; <br/>
+5:ScanBooking,扫码点餐; <br/>
+6:NoCodePay,无码收银; <br/>
+7:MemberRecharge,会员充值; <br/>
+8:MemberRechargeCount,会员充次; <br/>
+9:MiniProOrder,小程序订单; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>0,1,2,3,4,5,6,7,8,9</span></p></td></tr><tr key=0-15><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> paymethodType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式<br/>
+1:B2C,B2C; <br/>
+2:C2B,C2B; <br/>
+3:WechatMiniPro,WechatMiniPro; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,3</span></p></td></tr><tr key=0-16><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询Id</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h3 id="-15">返回数据</h3>
+<pre><code class="language-javascript">Success
+</code></pre>
+<h2 id="u5faeu4fe1jsu652fu4ed8uff0cu652fu6301u5c0fu7a0bu5e8fu3001u516cu4f17u53f70a3ca20id3du5faeu4fe1jsu652fu4ed8uff0cu652fu6301u5c0fu7a0bu5e8fu3001u516cu4f17u53f73e203ca3e">微信js支付，支持小程序、公众号
+<a id=微信js支付，支持小程序、公众号> </a></h2>
+<p></p>
+<h3 id="-16">基本信息</h3>
+<p><strong>Path：</strong> /api/ConvergePay/WechatJSPay</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-17">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>key</td>
+<td></td>
+<td>是</td>
+<td></td>
+<td>令牌key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> openId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">留空，从token中获取</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> money</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收款金额</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> subject</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收款说明</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> businessType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"><br/>
+0:Unknown,未分类; <br/>
+1:WebCheckout,网页收银台; <br/>
+2:AndroidCheckout,安卓收银台; <br/>
+3:IOSCheckout,IOS收银台; <br/>
+4:OnlineShop,在线商城; <br/>
+5:ScanBooking,扫码点餐; <br/>
+6:NoCodePay,无码收银; <br/>
+7:MemberRecharge,会员充值; <br/>
+8:MemberRechargeCount,会员充次; <br/>
+9:MiniProOrder,小程序订单; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>0,1,2,3,4,5,6,7,8,9</span></p></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> tradeType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">1：公众号支付，2：小程序支付</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-5><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询Id</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h3 id="-18">返回数据</h3>
+<pre><code class="language-javascript">Success
+</code></pre>
+<h2 id="u67e5u8be2u652fu4ed8u7ed3u679c0a3ca20id3du67e5u8be2u652fu4ed8u7ed3u679c3e203ca3e">查询支付结果
+<a id=查询支付结果> </a></h2>
+<p></p>
+<h3 id="-19">基本信息</h3>
+<p><strong>Path：</strong> /api/ConvergePay/{queryId}</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-20">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td></td>
+<td>是</td>
+<td></td>
+<td>令牌key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>queryId</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="-21">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> id</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> createTime</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5><p key=4><span style="font-weight: '700'">format: </span><span>date-time</span></p></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> remark</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> money</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">交易金额</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payOrderId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付订单号</span></td><td key=5></td></tr><tr key=0-5><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> status</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">排队状态<br/>
+1:Success,执行成功; <br/>
+2:InLine,排队中; <br/>
+3:Executing,执行中; <br/>
+-1:Faild,执行失败; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,3,-1</span></p></td></tr><tr key=0-6><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> parameterVersion</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付参数版本号</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-7><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> paymentType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式<br/>
+1:QRPay,扫码支付; <br/>
+2:WechatPay,微信支付; <br/>
+3:Alipay,支付宝; <br/>
+4:CCB,龙支付; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,3,4</span></p></td></tr><tr key=0-8><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payOrganizationType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收单结构</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-9><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> statusMessage</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">订单状态描述</span></td><td key=5></td></tr><tr key=0-10><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> refundStatus</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">退款状态</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-11><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> refundStatusMessage</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">退款状态描述</span></td><td key=5></td></tr><tr key=0-12><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> businessType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"><br/>
+0:Unknown,未分类; <br/>
+1:WebCheckout,网页收银台; <br/>
+2:AndroidCheckout,安卓收银台; <br/>
+3:IOSCheckout,IOS收银台; <br/>
+4:OnlineShop,在线商城; <br/>
+5:ScanBooking,扫码点餐; <br/>
+6:NoCodePay,无码收银; <br/>
+7:MemberRecharge,会员充值; <br/>
+8:MemberRechargeCount,会员充次; <br/>
+9:MiniProOrder,小程序订单; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>0,1,2,3,4,5,6,7,8,9</span></p></td></tr><tr key=0-13><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> orderJson</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">相关订单数据</span></td><td key=5></td></tr><tr key=0-14><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> orderTime</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">订单时间</span></td><td key=5><p key=4><span style="font-weight: '700'">format: </span><span>date-time</span></p></td></tr><tr key=0-15><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> shopId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">商户Id</span></td><td key=5></td></tr><tr key=0-16><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询Id</span></td><td key=5></td></tr><tr key=0-17><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> signValue</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">验签密钥</span></td><td key=5></td></tr><tr key=0-18><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> action</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">轮询动作类型<br/>
+1:Success,取到结果; <br/>
+2:Continue,继续轮询; <br/>
+-1:Stop,停止轮询; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,-1</span></p></td></tr><tr key=0-19><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> msg</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">消息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u83b7u53d6c2bu652fu4ed8u7801u94feu63a50a3ca20id3du83b7u53d6c2bu652fu4ed8u7801u94feu63a53e203ca3e">获取C2B支付码链接
+<a id=获取C2B支付码链接> </a></h2>
+<p></p>
+<h3 id="-22">基本信息</h3>
+<p><strong>Path：</strong> /api/ConvergePay/C2B</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-23">请求参数</h3>
+<p><strong>Query</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shopId</td>
+<td>否</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>queryId</td>
+<td>否</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="-24">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payUrl</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付链接</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> shopId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">商户Id</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询Id</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> signValue</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">验签密钥</span></td><td key=5></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> action</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">轮询动作类型<br/>
+1:Success,取到结果; <br/>
+2:Continue,继续轮询; <br/>
+-1:Stop,停止轮询; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,-1</span></p></td></tr><tr key=0-5><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> msg</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">消息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u83b7u53d6u5faeu4fe1jsu652fu4ed8u53c2u6570uff0cu652fu6301u5c0fu7a0bu5e8fu3001u516cu4f17u53f70a3ca20id3du83b7u53d6u5faeu4fe1jsu652fu4ed8u53c2u6570uff0cu652fu6301u5c0fu7a0bu5e8fu3001u516cu4f17u53f73e203ca3e">获取微信js支付参数，支持小程序、公众号
+<a id=获取微信js支付参数，支持小程序、公众号> </a></h2>
+<p></p>
+<h3 id="-25">基本信息</h3>
+<p><strong>Path：</strong> /api/ConvergePay/WechatJSPay</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-26">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td></td>
+<td>是</td>
+<td></td>
+<td>令牌key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Query</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>queryId</td>
+<td>否</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="-27">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> appId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">微信分配的 APPID 参考微信对应的调起支付 API</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> timeStamp</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">时间戳 参考微信对应的调起支付 API</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> nonceStr</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">随机串 参考微信对应的调起支付 API</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> package</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">数据包 参考微信对应的调起支付 API</span></td><td key=5></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> signType</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">签名方式 参考微信对应的调起支付 API</span></td><td key=5></td></tr><tr key=0-5><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> paySign</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">签名数据 参考微信对应的调起支付 API</span></td><td key=5></td></tr><tr key=0-6><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> shopId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">商户Id</span></td><td key=5></td></tr><tr key=0-7><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询Id</span></td><td key=5></td></tr><tr key=0-8><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> signValue</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">验签密钥</span></td><td key=5></td></tr><tr key=0-9><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> action</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">轮询动作类型<br/>
+1:Success,取到结果; <br/>
+2:Continue,继续轮询; <br/>
+-1:Stop,停止轮询; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,-1</span></p></td></tr><tr key=0-10><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> msg</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">消息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h1 id="u9000u6b3e">退款</h1>
+<p></p>
+<h2 id="u539fu8defu9000u6b3e0a3ca20id3du539fu8defu9000u6b3e3e203ca3e">原路退款
+<a id=原路退款> </a></h2>
+<p></p>
+<h3 id="-28">基本信息</h3>
+<p><strong>Path：</strong> /api/Refund/v2</p>
+<p><strong>Method：</strong> POST</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-29">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>application/json</td>
+<td>是</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>key</td>
+<td></td>
+<td>是</td>
+<td></td>
+<td>令牌key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询Id</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> refundPassword</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">退款密码</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> refundMoney</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">退款金额</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr>
+               </tbody>
+              </table>
+<h3 id="-30">返回数据</h3>
+<pre><code class="language-javascript">Success
+</code></pre>
+<h2 id="u67e5u8be2u9000u6b3eu7ed3u679c0a3ca20id3du67e5u8be2u9000u6b3eu7ed3u679c3e203ca3e">查询退款结果
+<a id=查询退款结果> </a></h2>
+<p></p>
+<h3 id="-31">基本信息</h3>
+<p><strong>Path：</strong> /api/Refund/{queryId}</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-32">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td></td>
+<td>是</td>
+<td></td>
+<td>令牌key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>路径参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>queryId</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="-33">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> shopId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">商户Id</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">查询Id</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> signValue</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">验签密钥</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> action</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">轮询动作类型<br/>
+1:Success,取到结果; <br/>
+2:Continue,继续轮询; <br/>
+-1:Stop,停止轮询; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,-1</span></p></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> msg</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">消息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h1 id="u6536u6b3eu6d41u6c34">收款流水</h1>
+<p></p>
+<h2 id="u67e5u8be2u62a5u886828v2290a3ca20id3du67e5u8be2u62a5u886828v2293e203ca3e">查询报表(V2)
+<a id=查询报表(V2)> </a></h2>
+<p></p>
+<h3 id="-34">基本信息</h3>
+<p><strong>Path：</strong> /api/Report/V2</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-35">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td></td>
+<td>是</td>
+<td></td>
+<td>令牌key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Query</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OrderStatus</td>
+<td>否</td>
+<td></td>
+<td>订单状态</td>
+</tr>
+<tr>
+<td>MixQueryId</td>
+<td>否</td>
+<td></td>
+<td>收单结构订单号、业务订单号、支付系统订单号</td>
+</tr>
+<tr>
+<td>StartTime</td>
+<td>否</td>
+<td></td>
+<td>开始时间</td>
+</tr>
+<tr>
+<td>EndTime</td>
+<td>否</td>
+<td></td>
+<td>结束时间</td>
+</tr>
+<tr>
+<td>ShopId</td>
+<td>否</td>
+<td></td>
+<td>店铺Id，总后台有效</td>
+</tr>
+<tr>
+<td>PaymentType</td>
+<td>否</td>
+<td></td>
+<td>支付方式</td>
+</tr>
+<tr>
+<td>QueryId</td>
+<td>否</td>
+<td></td>
+<td>收单结构订单号、业务订单号、支付系统订单号</td>
+</tr>
+<tr>
+<td>PageIndex</td>
+<td>否</td>
+<td></td>
+<td>页码</td>
+</tr>
+<tr>
+<td>PageSize</td>
+<td>否</td>
+<td></td>
+<td>页容量</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-36">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> total</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">总数</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> datas</span></td><td key=1><span>object []</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">数据</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>object</span></p></td></tr><tr key=0-1-0><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> shopId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">商户Id</span></td><td key=5></td></tr><tr key=0-1-1><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> payOrganizationType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收单机构<br/>
+5:StartPosPay,新大陆; <br/>
+11:CCBPay,CCBPay; <br/>
+14:CCBPaySync,龙支付定时上单; <br/>
+-1:Unknown,未知; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>5,11,14,-1</span></p></td></tr><tr key=0-1-2><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> payOrganizationTypeString</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收单机构</span></td><td key=5></td></tr><tr key=0-1-3><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> payOrderId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付系统订单号</span></td><td key=5></td></tr><tr key=0-1-4><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> businessType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"><br/>
+0:Unknown,未分类; <br/>
+1:WebCheckout,网页收银台; <br/>
+2:AndroidCheckout,安卓收银台; <br/>
+3:IOSCheckout,IOS收银台; <br/>
+4:OnlineShop,在线商城; <br/>
+5:ScanBooking,扫码点餐; <br/>
+6:NoCodePay,无码收银; <br/>
+7:MemberRecharge,会员充值; <br/>
+8:MemberRechargeCount,会员充次; <br/>
+9:MiniProOrder,小程序订单; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>0,1,2,3,4,5,6,7,8,9</span></p></td></tr><tr key=0-1-5><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> businessTypeString</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">业务系统名称</span></td><td key=5></td></tr><tr key=0-1-6><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">业务系统订单号</span></td><td key=5></td></tr><tr key=0-1-7><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> payOrganizationOrderId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收单机构订单号</span></td><td key=5></td></tr><tr key=0-1-8><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> orderTime</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">订单时间</span></td><td key=5><p key=4><span style="font-weight: '700'">format: </span><span>date-time</span></p></td></tr><tr key=0-1-9><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> money</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付金额</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr><tr key=0-1-10><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> paymentType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式<br/>
+1:QRPay,扫码支付; <br/>
+2:WechatPay,微信支付; <br/>
+3:Alipay,支付宝; <br/>
+4:CCB,龙支付; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,3,4</span></p></td></tr><tr key=0-1-11><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> paymentTypeString</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">付款方式</span></td><td key=5></td></tr><tr key=0-1-12><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> paymethodType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式<br/>
+1:B2C,B2C; <br/>
+2:C2B,C2B; <br/>
+3:WechatMiniPro,WechatMiniPro; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,3</span></p></td></tr><tr key=0-1-13><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> paymethodTypeString</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式</span></td><td key=5></td></tr><tr key=0-1-14><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> isRefund</span></td><td key=1><span>boolean</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">退款记录</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> infos</span></td><td key=1><span>object</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">额外信息</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+<h2 id="u83b7u53d6u62a5u8868u8be6u60c528v2290a3ca20id3du83b7u53d6u62a5u8868u8be6u60c528v2293e203ca3e">获取报表详情(V2)
+<a id=获取报表详情(V2)> </a></h2>
+<p></p>
+<h3 id="-37">基本信息</h3>
+<p><strong>Path：</strong> /api/Report/V2/Details</p>
+<p><strong>Method：</strong> GET</p>
+<p><strong>接口描述：</strong></p>
+<h3 id="-38">请求参数</h3>
+<p><strong>Headers</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数值</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td></td>
+<td>是</td>
+<td></td>
+<td>令牌key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Query</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>是否必须</th>
+<th>示例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QueryId</td>
+<td>否</td>
+<td></td>
+<td>查询Id</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-39">返回数据</h3>
+<table>
+  <thead class="ant-table-thead">
+    <tr>
+      <th key=name>名称</th><th key=type>类型</th><th key=required>是否必须</th><th key=default>默认值</th><th key=desc>备注</th><th key=sub>其他信息</th>
+    </tr>
+  </thead><tbody className="ant-table-tbody"><tr key=0-0><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> shopName</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">商户名称</span></td><td key=5></td></tr><tr key=0-1><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> hasRefund</span></td><td key=1><span>boolean</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">已退款</span></td><td key=5></td></tr><tr key=0-2><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> hasFullRefund</span></td><td key=1><span>boolean</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">全额退款</span></td><td key=5></td></tr><tr key=0-3><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> refundMoney</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">退款金额</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr><tr key=0-4><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> refunds</span></td><td key=1><span>object []</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">退款记录</span></td><td key=5><p key=3><span style="font-weight: '700'">item 类型: </span><span>object</span></p></td></tr><tr key=0-4-0><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> id</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p></td></tr><tr key=0-4-1><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> orderTime</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5><p key=4><span style="font-weight: '700'">format: </span><span>date-time</span></p></td></tr><tr key=0-4-2><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> isOldData</span></td><td key=1><span>boolean</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr><tr key=0-4-3><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> payOrderId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr><tr key=0-4-4><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> money</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr><tr key=0-4-5><td key=0><span style="padding-left: 20px"><span style="color: #8c8a8a">├─</span> shopId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"></span></td><td key=5></td></tr><tr key=0-5><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> shopId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">商户Id</span></td><td key=5></td></tr><tr key=0-6><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payOrganizationType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收单机构<br/>
+5:StartPosPay,新大陆; <br/>
+11:CCBPay,CCBPay; <br/>
+14:CCBPaySync,龙支付定时上单; <br/>
+-1:Unknown,未知; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>5,11,14,-1</span></p></td></tr><tr key=0-7><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payOrganizationTypeString</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收单机构</span></td><td key=5></td></tr><tr key=0-8><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payOrderId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付系统订单号</span></td><td key=5></td></tr><tr key=0-9><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> businessType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap"><br/>
+0:Unknown,未分类; <br/>
+1:WebCheckout,网页收银台; <br/>
+2:AndroidCheckout,安卓收银台; <br/>
+3:IOSCheckout,IOS收银台; <br/>
+4:OnlineShop,在线商城; <br/>
+5:ScanBooking,扫码点餐; <br/>
+6:NoCodePay,无码收银; <br/>
+7:MemberRecharge,会员充值; <br/>
+8:MemberRechargeCount,会员充次; <br/>
+9:MiniProOrder,小程序订单; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>0,1,2,3,4,5,6,7,8,9</span></p></td></tr><tr key=0-10><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> businessTypeString</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">业务系统名称</span></td><td key=5></td></tr><tr key=0-11><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> queryId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">业务系统订单号</span></td><td key=5></td></tr><tr key=0-12><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> payOrganizationOrderId</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">收单机构订单号</span></td><td key=5></td></tr><tr key=0-13><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> orderTime</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">订单时间</span></td><td key=5><p key=4><span style="font-weight: '700'">format: </span><span>date-time</span></p></td></tr><tr key=0-14><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> money</span></td><td key=1><span>number</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付金额</span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>double</span></p></td></tr><tr key=0-15><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> paymentType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式<br/>
+1:QRPay,扫码支付; <br/>
+2:WechatPay,微信支付; <br/>
+3:Alipay,支付宝; <br/>
+4:CCB,龙支付; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,3,4</span></p></td></tr><tr key=0-16><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> paymentTypeString</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">付款方式</span></td><td key=5></td></tr><tr key=0-17><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> paymethodType</span></td><td key=1><span>integer</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式<br/>
+1:B2C,B2C; <br/>
+2:C2B,C2B; <br/>
+3:WechatMiniPro,WechatMiniPro; </span></td><td key=5><p key=2><span style="font-weight: '700'">format: </span><span>int32</span></p><p key=3><span style="font-weight: '700'">枚举: </span><span>1,2,3</span></p></td></tr><tr key=0-18><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> paymethodTypeString</span></td><td key=1><span>string</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">支付方式</span></td><td key=5></td></tr><tr key=0-19><td key=0><span style="padding-left: 0px"><span style="color: #8c8a8a"></span> isRefund</span></td><td key=1><span>boolean</span></td><td key=2>非必须</td><td key=3></td><td key=4><span style="white-space: pre-wrap">退款记录</span></td><td key=5></td></tr>
+               </tbody>
+              </table>
+
+            <footer class="m-footer">
+              <p>Build by <a href="https://ymfe.org/">YMFE</a>.</p>
+            </footer>
+          </div>
+        </div>
+      </body>
+      </html>
+      

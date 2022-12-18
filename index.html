@@ -96,11 +96,6 @@
         <div class="code-footer">长按以上二维码向优创门窗+全屋定制付款</div>
     </div>
     <script>
-        if (navigator.userAgent.match(/QQ\//i)) {
-            alert('QQ付款维护中，敬请期待');
-            return false;
-        }
-
         function makeCode(id, text) {
             var width = 200;
             var height = 200;
@@ -136,6 +131,11 @@
         }
 
         window.onload = function () {
+            if (navigator.userAgent.match(/QQ\//i)) {
+                alert('QQ付款维护中，敬请期待');
+                return false;
+            }
+
             document.getElementById(urlName).src = document.getElementById('qrcode-img').getElementsByTagName('img')[0].src;
 
             document.getElementById('qrcode-img').remove();
